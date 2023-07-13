@@ -15,7 +15,6 @@ async function getStartingRoster(roster, rosterConstruction) {
     }
     return Object.keys(startingRoster).map(player => JSON.parse(player));
 }
-
 async function filterRoster(roster, position){
     const players= await Promise.all(roster.map(player => getPlayerData(player)));
     let filteredPlayers;
