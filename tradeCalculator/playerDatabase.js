@@ -1,21 +1,21 @@
-import localforage from 'https://cdn.skypack.dev/localforage';
+// import localforage from 'https://cdn.skypack.dev/localforage';
 
 //create database instances
 // const apiKey = "MVGVZRMV3XAC5QTHWJWG";
 const apiKey = "TEST";
 const baseUrl = "https://api.fantasynerds.com/v1/nfl/";
-const dbName = 'localforage';
-const players = localforage.createInstance({
-    name: dbName,
-    storeName: "players"
-})
+// const dbName = 'localforage';
+// const players = localforage.createInstance({
+//     name: dbName,
+//     storeName: "players"
+// })
 
 //populate database with player information
 async function getPlayerData(playerName){
-    const cacheResponse = await players.getItem(playerName);
-    if (cacheResponse !== null){
-        return cacheResponse.json();
-    }
+    // const cacheResponse = await players.getItem(playerName);
+    // if (cacheResponse !== null){
+    //     return cacheResponse.json();
+    // }
     const playerObj = {};
     const [playerInfo, projections, injuryRisk] = await Promise.all([
         getPlayerInfo(playerName),
@@ -25,7 +25,7 @@ async function getPlayerData(playerName){
     Object.assign(playerObj, playerInfo);
     playerObj.projection = projections;
     playerObj.injuryRisk = injuryRisk;
-    players.setItem(playerName.toUpperCase(), playerObj);
+    // players.setItem(playerName.toUpperCase(), playerObj);
     return playerObj;
 }
 
@@ -69,9 +69,22 @@ async function getInjuryRisk(playerName){
     }
 }
 
-console.log(await getPlayerData("Patrick Mahomes"))
+async function clearCache(){
+    players.clear();
+}
+
+//{
+//   name: 'Patrick Mahomes',
+//   team: 'KC',
+//   position: 'QB',
+//   rank: 19,
+//   rank_position: 1,
+//   projection: 416.7,
+//   injuryRisk: 3
+// }
+
 
 export {
-    getItems,
-    getProjections
+    getPlayerData,
+    clearCache
 }
