@@ -1,8 +1,5 @@
 {
   "name": "fantasytradecalc",
   "version": "1.0.0",
-  "type": "module",
-  "dependencies": {
-    "espn-fantasy-football-api": "^0.16.1"
-  }
+  "type": "module"
 }
