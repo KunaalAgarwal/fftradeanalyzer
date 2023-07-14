@@ -55,11 +55,21 @@ function getAverageRank(startingRoster, rosterConstruction){
     return totalRank/rosterSlots;
 }
 
+function setRosterConstruction(rosterSlots){
+    return {
+        "QB": rosterSlots[0],
+        "RB": rosterSlots[1],
+        "WR": rosterSlots[2],
+        "TE": rosterSlots[3],
+        "FLEX": rosterSlots[4]
+    }
+}
 
 export {
     getStartingRoster,
     getTotalProjection,
     getAverageProjection,
     getAverageInjuryRisk,
-    getAverageRank
+    getAverageRank,
+    setRosterConstruction
 }

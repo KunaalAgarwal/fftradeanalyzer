@@ -8,7 +8,8 @@ import {
     getTotalProjection,
     getAverageInjuryRisk,
     getAverageProjection,
-    getAverageRank
+    getAverageRank,
+    setRosterConstruction
 } from "./tradeCalculator/roster.js";
 
 import {
@@ -27,6 +28,7 @@ export {
     getAverageProjection,
     getAverageRank,
     getRosterStats,
+    setRosterConstruction,
     executeTrade,
     getTradeResults,
     getTradeWinner
