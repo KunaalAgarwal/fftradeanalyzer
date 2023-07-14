@@ -1,2 +1,2 @@
 ### [Live at](https://kunaalagarwal.github.io/fantasytradecalculator/)
-### Observable Notebook: 
+### [Observable Notebook](https://observablehq.com/@kunaal/fantasytradecalculator) 
