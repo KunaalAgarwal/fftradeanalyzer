@@ -1,13 +1,24 @@
-import {getStartingRoster, getAverageProjection, getAverageInjuryRisk, getTotalProjection, getAverageRank} from "./tradeCalculator/roster.js";
-import {getPlayerData} from "./tradeCalculator/playerDatabase.js";
-async function getRosterStats(roster, rosterConstruction){
-    const stats = {}
+import {getStartingRoster, getAverageProjection, getAverageInjuryRisk, getTotalProjection, getAverageRank} from "./roster.js";
+async function getRosterStats(roster, rosterConstruction) {
     const startingRoster = await getStartingRoster(roster, rosterConstruction);
-    stats["avgRank"] = await getAverageRank(startingRoster, rosterConstruction);
-    stats["totalProj"] = await getTotalProjection(startingRoster);
-    stats["avgProj"] = await getAverageProjection(startingRoster, rosterConstruction);
-    stats["avgInjuryRisk"] = await getAverageInjuryRisk(startingRoster, rosterConstruction);
-    return stats;
+    const [
+        avgRank,
+        totalProj,
+        avgProj,
+        avgInjuryRisk
+    ] = await Promise.all([
+        getAverageRank(startingRoster, rosterConstruction),
+        getTotalProjection(startingRoster),
+        getAverageProjection(startingRoster, rosterConstruction),
+        getAverageInjuryRisk(startingRoster, rosterConstruction)
+    ]);
+
+    return {
+        avgRank,
+        totalProj,
+        avgProj,
+        avgInjuryRisk
+    };
 }
 function executeTrade(roster, playersLost, playersGained){
     playersLost.forEach(player => {removePlayer(roster, player)})
@@ -55,24 +66,28 @@ function normalizeGrade(grade, minGrade, maxGrade) {
     return Math.max(0, Math.min(10, normalizedScore));
 }
 
-function removePlayer(roster, player){
-    let count = 0;
-    roster.forEach(x => {
-        if (x.toUpperCase() === player.toUpperCase()){
-            roster.splice(count, 1);
-        }
-        count++;
-    })
+function removePlayer(roster, player) {
+    const index = roster.findIndex(x => x.toUpperCase() === player.toUpperCase());
+    if (index !== -1) {
+        roster.splice(index, 1);
+    }
 }
 
+export {
+    getRosterStats,
+    executeTrade,
+    getTradeResults,
+    getTradeWinner
+}
 
 // let rosCon = {"QB": 1};
 // let a = ["Patrick Mahomes"];
 // let b = ["Josh Allen"];
-//
-// // getRosterStats(a, rosCon).then(r => console.log(r));
-// // executeTrade(["Patrick Mahomes"], ["Josh Allen"], a, b)
-// // getRosterStats(a, rosCon).then(r => console.log(r));
-//
-// // let asd = await getTradeResults(rosCon,["Patrick Mahomes"], ["Josh Allen"], a, b);
+
+// getRosterStats(a, rosCon).then(r => console.log(r));
+// executeTrade(["Patrick Mahomes"], ["Josh Allen"], a, b)
+// getRosterStats(a, rosCon).then(r => console.log(r));
+
+// let asd = await getTradeResults(rosCon,["Patrick Mahomes"], ["Josh Allen"], a, b);
 // getTradeWinner(rosCon,["Patrick Mahomes"], ["Josh Allen"], a, b).then(r => console.log(r))
+// console.log(asd);
