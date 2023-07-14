@@ -6,11 +6,15 @@ async function getStartingRoster(roster, rosterConstruction) {
         let count = 0;
         const players = await filterRoster(roster, position);
         while (rosterConstruction[position] !== getPositionSlotsFilled(startingRoster, position)) {
-            if (!startingRosterNames.has(players[count].name)) {
-                startingRosterNames.add(players[count].name);
-                startingRoster[JSON.stringify(players[count])] = position;
+            if (players.length > 0){
+                if (!startingRosterNames.has(players[count].name)) {
+                    startingRosterNames.add(players[count].name);
+                    startingRoster[JSON.stringify(players[count])] = position;
+                }
+                count++;
+            } else {
+                break;
             }
-            count++;
         }
     }
     return Object.keys(startingRoster).map(player => JSON.parse(player));
@@ -30,6 +34,32 @@ function getPositionSlotsFilled(roster, position){
     return Object.values(roster).filter(p => p === position).length;
 }
 
+function getTotalProjection(startingRoster){
+    return startingRoster.reduce((totalProj, player) => totalProj + player.projection, 0);
+}
+
+function getAverageProjection(startingRoster, rosterConstruction){
+    const rosterSlots = Object.values(rosterConstruction).reduce((total, value) => total + value, 0);
+    return getTotalProjection(startingRoster)/rosterSlots;
+}
+
+function getAverageInjuryRisk(startingRoster, rosterConstruction){
+    const rosterSlots = Object.values(rosterConstruction).reduce((total, value) => total + value, 0);
+    const totalInjuryRisk = startingRoster.reduce((total, player) => total + player.injuryRisk, 0);
+    return totalInjuryRisk/rosterSlots;
+}
+
+function getAverageRank(startingRoster, rosterConstruction){
+    const rosterSlots = Object.values(rosterConstruction).reduce((total, value) => total + value, 0);
+    const totalRank = startingRoster.reduce((total, player) => total + player["rank"], 0);
+    return totalRank/rosterSlots;
+}
+
+
 export {
-    getStartingRoster
+    getStartingRoster,
+    getTotalProjection,
+    getAverageProjection,
+    getAverageInjuryRisk,
+    getAverageRank
 }
