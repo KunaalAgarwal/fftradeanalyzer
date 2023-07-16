@@ -16,7 +16,7 @@ async function getPlayerData(playerName, scoringFormat){
     }
     const playerObj = await getProjections(playerName, scoringFormat);
     playerObj["Upside"] = await getUpside(playerName, scoringFormat);
-    players.setItem(playerName.toUpperCase(), playerObj.json());
+    players.setItem(playerName.toUpperCase(), playerObj);
     return playerObj;
 }
 
