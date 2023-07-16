@@ -9,15 +9,23 @@ const players = localforage.createInstance({
     storeName: "players"
 })
 
-async function getPlayerData(playerName, scoringFormat){
-    const cacheResponse = await players.getItem(`${playerName.toUpperCase()}${scoringFormat}`);
-    if (cacheResponse !== null){
-        return cacheResponse;
+async function getPlayerData(playerName, scoringFormat) {
+    try {
+        const cacheKey = `${playerName.toUpperCase()}${scoringFormat}`;
+        const cacheResponse = await players.getItem(cacheKey);
+        if (cacheResponse !== null) {
+            return cacheResponse;
+        }
+        const [playerObj, upside] = await Promise.all([
+            getProjections(playerName, scoringFormat),
+            getUpside(playerName, scoringFormat)
+        ]);
+        playerObj["Upside"] = upside;
+        players.setItem(cacheKey, playerObj);
+        return playerObj;
+    } catch (error) {
+        console.log("An error occurred in the API request: " + error);
     }
-    const playerObj = await getProjections(playerName, scoringFormat);
-    playerObj["Upside"] = await getUpside(playerName, scoringFormat);
-    players.setItem(`${playerName.toUpperCase()}${scoringFormat}`, playerObj);
-    return playerObj;
 }
 
 async function getItems(endpoint){
@@ -43,8 +51,10 @@ async function getProjections(playerName, scoringFormat = ""){
 }
 
 async function getUpside(playerName, scoringFormat = ""){
-    const maxWeek = await getMaxWeekScore(playerName, scoringFormat);
-    const playerPosition = await getPosition(playerName);
+    const [maxWeek, playerPosition] = await Promise.all([
+        getMaxWeekScore(playerName, scoringFormat),
+        getPosition(playerName)
+    ]);
     switch (playerPosition){
         case "QB": return normalizeGrade(maxWeek, 18, 45);
         case "WR": return normalizeGrade(maxWeek, 15, 40);
