@@ -1,5 +1,6 @@
 import {
     getPlayerData,
+    getPlayersList,
     clearCache
 } from "./tradeCalculator/playerDatabase.js";
 
@@ -21,6 +22,7 @@ import {
 
 export {
     getPlayerData,
+    getPlayersList,
     clearCache,
     getStartingRoster,
     getTotalProjection,

@@ -1,3 +1,4 @@
+import {normalizeGrade} from "./playerDatabase.js";
 import {getStartingRoster, getAverageProjection, getAverageInjuryRisk, getTotalProjection, getAverageRank} from "./roster.js";
 async function getRosterStats(roster, rosterConstruction) {
     const startingRoster = await getStartingRoster(roster, rosterConstruction);
@@ -59,11 +60,6 @@ function normalize(metric, value){
         case "avgProj": return normalizeGrade(value, -25, 25);
         case "avgInjuryRisk": return 10 - normalizeGrade(value, -5, 5);
     }
-}
-
-function normalizeGrade(grade, minGrade, maxGrade) {
-    const normalizedScore = (grade - minGrade) / (maxGrade - minGrade) * 10;
-    return Math.max(0, Math.min(10, normalizedScore));
 }
 
 function removePlayer(roster, player) {
