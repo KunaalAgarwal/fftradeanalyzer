@@ -1,15 +1,13 @@
 import {getPlayerData} from "./playerDatabase.js";
-async function getStartingRoster(roster, rosterConstruction) {
-    const startingRosterNames = new Set();
+async function getStartingRoster(roster, rosterConstruction, scoringFormat) {
     const startingRoster = {};
     for (let position in rosterConstruction) {
         let count = 0;
-        const players = await filterRoster(roster, position);
+        const players = await filterRoster(roster, position, scoringFormat);
         while (rosterConstruction[position] !== getPositionSlotsFilled(startingRoster, position)) {
             if (players.length > 0){
-                if (!startingRosterNames.has(players[count].name)) {
-                    startingRosterNames.add(players[count].name);
-                    startingRoster[JSON.stringify(players[count])] = position;
+                if (Object.values(startingRoster).filter(player => player.name === players[count].name).length === 0) {
+                    startingRoster[position] = players[count];
                 }
                 count++;
             } else {
@@ -17,21 +15,22 @@ async function getStartingRoster(roster, rosterConstruction) {
             }
         }
     }
-    return Object.keys(startingRoster).map(player => JSON.parse(player));
+    return Object.values(startingRoster);
 }
-async function filterRoster(roster, position){
-    const players= await Promise.all(roster.map(player => getPlayerData(player)));
+
+async function filterRoster(roster, position, scoringFormat){
+    const players= await Promise.all(roster.map(player => getPlayerData(player, scoringFormat)));
     let filteredPlayers;
     if (position === "FLEX"){
         filteredPlayers = players.filter(player => player.position !== "QB");
     } else {
         filteredPlayers = players.filter(player => player.position === position);
     }
-    return filteredPlayers.sort((a,b) => b.projection - a.projection);
+    return filteredPlayers.sort((a,b) => b.projection- a.projection);
 }
 
 function getPositionSlotsFilled(roster, position){
-    return Object.values(roster).filter(p => p === position).length;
+    return Object.keys(roster).filter(p => p === position).length;
 }
 
 function getTotalProjection(startingRoster){
@@ -73,3 +72,4 @@ export {
     getAverageRank,
     setRosterConstruction
 }
+

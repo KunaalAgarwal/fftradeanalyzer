@@ -20,7 +20,7 @@ async function getPlayerData(playerName, scoringFormat) {
             getProjections(playerName, scoringFormat),
             getUpside(playerName, scoringFormat)
         ]);
-        playerObj["Upside"] = upside;
+        playerObj["upside"] = upside;
         players.setItem(cacheKey, playerObj);
         return playerObj;
     } catch (error) {
@@ -46,7 +46,7 @@ async function getProjections(playerName, scoringFormat = ""){
         position: playerObj[0]['Position'],
         projection: playerObj[0][`FantasyPoints${scoringFormat}`],
         ADP: playerObj[0][`AverageDraftPosition${scoringFormat}`],
-        AuctionValue: playerObj[0][`AuctionValue${scoringFormat}`]
+        auctionValue: playerObj[0][`AuctionValue${scoringFormat}`]
     }
 }
 
@@ -112,4 +112,3 @@ export {
     clearCache
 }
 
-// getPlayerData("Justin Jefferson", "PPR").then(r => console.log(r));
