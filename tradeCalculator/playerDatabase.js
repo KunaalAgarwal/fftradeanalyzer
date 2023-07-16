@@ -10,14 +10,13 @@ const players = localforage.createInstance({
 })
 
 async function getPlayerData(playerName, scoringFormat){
-    //need to adjust this error upon .json() and think about storing the scoring format as well
-    const cacheResponse = await players.getItem(playerName.toUpperCase());
+    const cacheResponse = await players.getItem(`${playerName.toUpperCase()}${scoringFormat}`);
     if (cacheResponse !== null){
         return cacheResponse;
     }
     const playerObj = await getProjections(playerName, scoringFormat);
     playerObj["Upside"] = await getUpside(playerName, scoringFormat);
-    players.setItem(playerName.toUpperCase(), playerObj);
+    players.setItem(`${playerName.toUpperCase()}${scoringFormat}`, playerObj);
     return playerObj;
 }
 
