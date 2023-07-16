@@ -37,21 +37,23 @@ function getTotalProjection(startingRoster){
     return startingRoster.reduce((totalProj, player) => totalProj + player.projection, 0);
 }
 
-function getAverageProjection(startingRoster, rosterConstruction){
-    const rosterSlots = Object.values(rosterConstruction).reduce((total, value) => total + value, 0);
-    return getTotalProjection(startingRoster)/rosterSlots;
+function getAverageProjection(startingRoster, rosterSize){
+    return getTotalProjection(startingRoster)/rosterSize;
 }
 
-function getAverageInjuryRisk(startingRoster, rosterConstruction){
-    const rosterSlots = Object.values(rosterConstruction).reduce((total, value) => total + value, 0);
-    const totalInjuryRisk = startingRoster.reduce((total, player) => total + player.injuryRisk, 0);
-    return totalInjuryRisk/rosterSlots;
+function getAverageADP(startingRoster, rosterSize){
+    const totalRank = startingRoster.reduce((total, player) => total + player["ADP"], 0);
+    return totalRank/rosterSize;
 }
 
-function getAverageRank(startingRoster, rosterConstruction){
-    const rosterSlots = Object.values(rosterConstruction).reduce((total, value) => total + value, 0);
-    const totalRank = startingRoster.reduce((total, player) => total + player["rank"], 0);
-    return totalRank/rosterSlots;
+function getAverageValue(startingRoster, rosterSize){
+    const totalValue = startingRoster.reduce((total, player) => total + player["auctionValue"], 0);
+    return totalValue/rosterSize;
+}
+
+function getAverageUpside(startingRoster, rosterSize){
+    const totalUpside = startingRoster.reduce((total, player) => total + player["upside"], 0);
+    return totalUpside/rosterSize;
 }
 
 function setRosterConstruction(rosterSlots){
@@ -68,8 +70,9 @@ export {
     getStartingRoster,
     getTotalProjection,
     getAverageProjection,
-    getAverageInjuryRisk,
-    getAverageRank,
+    getAverageADP,
+    getAverageValue,
+    getAverageUpside,
     setRosterConstruction
 }
 

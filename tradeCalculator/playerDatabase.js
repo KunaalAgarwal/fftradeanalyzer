@@ -56,10 +56,10 @@ async function getUpside(playerName, scoringFormat = ""){
         getPosition(playerName)
     ]);
     switch (playerPosition){
-        case "QB": return normalizeGrade(maxWeek, 18, 45);
-        case "WR": return normalizeGrade(maxWeek, 15, 40);
-        case "RB": return normalizeGrade(maxWeek, 12, 40);
-        case "TE": return normalizeGrade(maxWeek, 8, 30);
+        case "QB": return normalizeGrade(maxWeek, 15, 35);
+        case "WR": return normalizeGrade(maxWeek, 12, 33);
+        case "RB": return normalizeGrade(maxWeek, 10, 30);
+        case "TE": return normalizeGrade(maxWeek, 8, 25);
     }
 }
 

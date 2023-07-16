@@ -7,9 +7,10 @@ import {
 import {
     getStartingRoster,
     getTotalProjection,
-    getAverageInjuryRisk,
     getAverageProjection,
-    getAverageRank,
+    getAverageADP,
+    getAverageValue,
+    getAverageUpside,
     setRosterConstruction
 } from "./tradeCalculator/roster.js";
 
@@ -26,12 +27,13 @@ export {
     clearCache,
     getStartingRoster,
     getTotalProjection,
-    getAverageInjuryRisk,
     getAverageProjection,
-    getAverageRank,
-    getRosterStats,
+    getAverageADP,
+    getAverageValue,
+    getAverageUpside,
     setRosterConstruction,
     executeTrade,
+    getRosterStats,
     getTradeResults,
     getTradeWinner
 }

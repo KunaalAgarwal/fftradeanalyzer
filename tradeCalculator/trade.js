@@ -1,24 +1,29 @@
 import {normalizeGrade} from "./playerDatabase.js";
-import {getStartingRoster, getAverageProjection, getAverageInjuryRisk, getTotalProjection, getAverageRank} from "./roster.js";
+import {getStartingRoster, getAverageProjection, getTotalProjection, getAverageADP, getAverageValue, getAverageUpside} from "./roster.js";
 async function getRosterStats(roster, rosterConstruction) {
+    const rosterSize = Object.values(rosterConstruction).reduce((total, value) => total + value, 0);
     const startingRoster = await getStartingRoster(roster, rosterConstruction);
     const [
-        avgRank,
         totalProj,
         avgProj,
-        avgInjuryRisk
+        avgUpside,
+        avgValue,
+        avgADP
     ] = await Promise.all([
-        getAverageRank(startingRoster, rosterConstruction),
         getTotalProjection(startingRoster),
-        getAverageProjection(startingRoster, rosterConstruction),
-        getAverageInjuryRisk(startingRoster, rosterConstruction)
-    ]);
+        getAverageProjection(startingRoster, rosterSize),
+        getAverageUpside(startingRoster, rosterSize),
+        getAverageValue(startingRoster, rosterSize),
+        getAverageADP(startingRoster, rosterSize),
+        getAverageProjection(startingRoster, rosterSize),
 
+    ]);
     return {
-        avgRank,
         totalProj,
         avgProj,
-        avgInjuryRisk
+        avgUpside,
+        avgValue,
+        avgADP
     };
 }
 function executeTrade(roster, playersLost, playersGained){
@@ -55,10 +60,11 @@ async function getTradeWinner(rosterConstruction, playersLost, playersGained, ro
 
 function normalize(metric, value){
     switch (metric){
-        case "avgRank": return 10 - normalizeGrade(value, -15, 15);
+        case "avgADP": return 10 - normalizeGrade(value, -22, 22);
         case "totalProj": return normalizeGrade(value, -100, 100);
         case "avgProj": return normalizeGrade(value, -25, 25);
-        case "avgInjuryRisk": return 10 - normalizeGrade(value, -5, 5);
+        case "avgValue": return normalizeGrade(value, -25, 25);
+        case "avgUpside": return normalizeGrade(value, -3,3);
     }
 }
 
@@ -79,11 +85,10 @@ export {
 // let rosCon = {"QB": 1};
 // let a = ["Patrick Mahomes"];
 // let b = ["Josh Allen"];
-
 // getRosterStats(a, rosCon).then(r => console.log(r));
 // executeTrade(["Patrick Mahomes"], ["Josh Allen"], a, b)
 // getRosterStats(a, rosCon).then(r => console.log(r));
 
 // let asd = await getTradeResults(rosCon,["Patrick Mahomes"], ["Josh Allen"], a, b);
-// getTradeWinner(rosCon,["Patrick Mahomes"], ["Josh Allen"], a, b).then(r => console.log(r))
 // console.log(asd);
+// getTradeWinner(rosCon,["Patrick Mahomes"], ["Josh Allen"], a, b).then(r => console.log(r))
