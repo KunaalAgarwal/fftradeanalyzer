@@ -57,14 +57,14 @@ async function getTradeWinner(rosterConstruction, playersLost, playersGained, ro
     })
     let tradeWinner;
     if (overallTradeGrades[0] > overallTradeGrades[1]){
-        tradeWinner = "Team 1"
+        tradeWinner = "Your Team"
     } else {
-        tradeWinner = "Team 2"
+        tradeWinner = "Trade Partner's Team"
     }
     return {
         Winner: tradeWinner,
-        ["Team1 Overall Trade Grade"]: `${overallTradeGrades[0]}/10`,
-        ["Team2 Overall Trade Grade"]: `${overallTradeGrades[1]}/10`,
+        ["Your Team Overall Trade Grade"]: `${overallTradeGrades[0]}/10`,
+        ["Trade Partner's Overall Trade Grade"]: `${overallTradeGrades[1]}/10`,
     }
 }
 

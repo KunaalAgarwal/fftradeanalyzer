@@ -11,6 +11,9 @@ const players = localforage.createInstance({
 
 async function getPlayerData(playerName, scoringFormat) {
     try {
+        if (scoringFormat.toUpperCase() === "STANDARD"){
+            scoringFormat = "";
+        }
         const cacheKey = `${playerName.toUpperCase()}${scoringFormat}`;
         const cacheResponse = await players.getItem(cacheKey);
         if (cacheResponse !== null) {
