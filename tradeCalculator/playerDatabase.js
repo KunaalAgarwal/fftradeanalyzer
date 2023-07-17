@@ -97,8 +97,15 @@ async function getPosition(playerName){
 }
 
 async function getPlayersList(){
+    const cacheKey = `PlayerSeasonProjectionStats/${year}REG`;
+    const cacheResponse = await players.getItem(cacheKey);
+    if (cacheResponse !== null) {
+        return cacheResponse;
+    }
     const response = await getItems(`PlayerSeasonProjectionStats/${year}REG`);
-    return response.map(playerObj => playerObj.Name);
+    const playerList = response.map(playerObj => playerObj.Name);
+    players.setItem(cacheKey, playerList);
+    return playerList;
 }
 
 async function clearCache(){
