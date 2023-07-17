@@ -55,14 +55,9 @@ function getAverageUpside(startingRoster, rosterSize){
     return totalUpside/rosterSize;
 }
 
-function setRosterConstruction(rosterSlots){
-    return {
-        "QB": rosterSlots[0],
-        "RB": rosterSlots[1],
-        "WR": rosterSlots[2],
-        "TE": rosterSlots[3],
-        "FLEX": rosterSlots[4]
-    }
+function setRosterConstruction(rosterSlots) {
+    const [QB, RB, WR, TE, FLEX] = rosterSlots;
+    return { QB, RB, WR, TE, FLEX };
 }
 
 export {

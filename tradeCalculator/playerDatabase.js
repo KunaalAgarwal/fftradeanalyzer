@@ -90,7 +90,7 @@ async function getMaxWeekScore(playerName, scoringFormat = "") {
         week++;
     }
     await Promise.all(promises);
-    return weeklyScores.reduce((a,b) => Math.max(a,b));
+    return weeklyScores.reduce((a,b) => Math.max(a,b), 0);
 }
 
 async function getPosition(playerName){
@@ -100,15 +100,19 @@ async function getPosition(playerName){
 }
 
 async function getPlayersList(){
-    const cacheKey = `PlayerSeasonProjectionStats/${year}REG`;
-    const cacheResponse = await players.getItem(cacheKey);
-    if (cacheResponse !== null) {
-        return cacheResponse;
+    try{
+        const cacheKey = `PlayerSeasonProjectionStats/${year}REG`;
+        const cacheResponse = await players.getItem(cacheKey);
+        if (cacheResponse !== null) {
+            return cacheResponse;
+        }
+        const response = await getItems(`PlayerSeasonProjectionStats/${year}REG`);
+        const playerList = response.map(playerObj => playerObj.Name);
+        players.setItem(cacheKey, playerList);
+        return playerList;
+    } catch (error){
+        console.log("A list of players could not be retrieved." + error);
     }
-    const response = await getItems(`PlayerSeasonProjectionStats/${year}REG`);
-    const playerList = response.map(playerObj => playerObj.Name);
-    players.setItem(cacheKey, playerList);
-    return playerList;
 }
 
 async function clearCache(){
