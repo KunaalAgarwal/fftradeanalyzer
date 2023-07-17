@@ -92,16 +92,21 @@ export {
     getTradeWinner
 }
 
-// let rosCon = {"QB": 1, "FLEX": 1};
-// let a = ["Josh Allen", "Christian McCaffrey"];
-// let b = ["Patrick Mahomes", "J.K. Dobbins"];
-// // console.log(await filterRoster(a, "RB", "PPR"));
-// // getStartingRoster(a, rosCon, "PPR").then(r => console.log(r))
-//
-// // executeTrade(["Christian McCaffery"], ["J.K. Dobbins"], a, b)
-// // getRosterStats(a, rosCon).then(r => console.log(r));
-//
-// let asd = await getTradeResults(rosCon,["Christian McCaffrey"], ["J.K. Dobbins"], a, b);
-// console.log(asd);
-// getTradeWinner(rosCon,["Christian McCaffrey"], ["J.K. Dobbins"], a, b).then(r => console.log(r));
-// // getTradeWinner(rosCon,["Patrick Mahomes"], ["Josh Allen"], a, b).then(r => console.log(r))
+let rosCon = {"QB": 0, "WR": 0, "FLEX": 2}
+let a = ["Christian McCaffrey", "Davante Adams", "Breece Hall"];
+let b = ["J.K. Dobbins", "Justin Jefferson"];
+// filterRoster(a, "FLEX", "PPR").then(r => console.log(r))
+// getStartingRoster(a, rosCon, "PPR").then(r => console.log(r))
+// getStartingRoster(b, rosCon, "PPR").then(r => console.log(r))
+
+
+
+// executeTrade(["Christian McCaffery"], ["J.K. Dobbins"], a, b)
+// getRosterStats(a, rosCon, "PPR").then(r => console.log(r));
+// getRosterStats(b, rosCon, "PPR").then(r => console.log(r));
+
+
+let asd = await getTradeResults(rosCon,["Christian McCaffrey"], ["J.K. Dobbins"], a, b);
+console.log(asd);
+
+// getTradeWinner(rosCon,["Christian McCaffrey"], ["J.K. Dobbins"], a, b, "PPR").then(r => console.log(r));

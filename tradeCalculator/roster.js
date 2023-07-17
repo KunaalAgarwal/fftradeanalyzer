@@ -2,23 +2,22 @@ import {getPlayerData} from "./playerDatabase.js";
 async function getStartingRoster(roster, rosterConstruction, scoringFormat) {
     const startingRoster = {};
     for (let position in rosterConstruction) {
-        let count = 0;
+        if (!(rosterConstruction[position] > 0)){
+            continue;
+        }
         const players = await filterRoster(roster, position, scoringFormat);
-        while (rosterConstruction[position] !== getPositionSlotsFilled(startingRoster, position)) {
-            if (players.length > 0){
-                if (Object.values(startingRoster).filter(player => player.name === players[count].name).length === 0) {
-                    startingRoster[position] = players[count];
-                }
-                count++;
-            } else {
+        const filteredPlayers = players.filter(player => startingRoster[player.name] === undefined);
+        for (let i = 0; i < rosterConstruction[position]; i++){
+            if (!(filteredPlayers.length > 0) || filteredPlayers[i] === undefined){
                 break;
             }
+            startingRoster[filteredPlayers[i].name] = filteredPlayers[i]
         }
     }
     return Object.values(startingRoster);
 }
 
-async function filterRoster(roster, position, scoringFormat){
+export async function filterRoster(roster, position, scoringFormat){
     const players= await Promise.all(roster.map(player => getPlayerData(player, scoringFormat)));
     let filteredPlayers;
     if (position === "FLEX"){
@@ -26,11 +25,7 @@ async function filterRoster(roster, position, scoringFormat){
     } else {
         filteredPlayers = players.filter(player => player.position === position);
     }
-    return filteredPlayers.sort((a,b) => b.projection- a.projection);
-}
-
-function getPositionSlotsFilled(roster, position){
-    return Object.keys(roster).filter(p => p === position).length;
+    return filteredPlayers.sort((a,b) => b.projection - a.projection);
 }
 
 function getTotalProjection(startingRoster){
