@@ -1,8 +1,16 @@
 import {normalizeGrade} from "./playerDatabase.js";
-import {getStartingRoster, getAverageProjection, getTotalProjection, getAverageADP, getAverageValue, getAverageUpside} from "./roster.js";
+import {
+    getAverageADP,
+    getAverageProjection,
+    getAverageUpside,
+    getAverageValue,
+    getStartingRoster,
+    getTotalProjection
+} from "./roster.js";
+
 async function getRosterStats(roster, rosterConstruction, scoringFormat) {
-    const rosterSize = Object.values(rosterConstruction).reduce((total, value) => total + value, 0);
     const startingRoster = await getStartingRoster(roster, rosterConstruction, scoringFormat);
+    const rosterSize = startingRoster.length;
     const [
         totalProj,
         avgProj,
@@ -24,6 +32,7 @@ async function getRosterStats(roster, rosterConstruction, scoringFormat) {
         avgADP
     };
 }
+
 function executeTrade(roster, playersLost, playersGained){
     let rosterCopy = [...roster]
     playersLost.forEach(player => {removePlayer(rosterCopy, player)})
@@ -32,40 +41,34 @@ function executeTrade(roster, playersLost, playersGained){
 }
 
 async function getTradeResults(rosterConstruction, playersLost, playersGained, roster1, roster2, scoringFormat) {
-    const preTradeRoster1 = await getRosterStats(roster1, rosterConstruction, scoringFormat);
-    const preTradeRoster2 = await getRosterStats(roster2, rosterConstruction, scoringFormat);
-    const postTradeRoster1 = await getRosterStats(executeTrade(roster1, playersLost, playersGained), rosterConstruction, scoringFormat);
-    const postTradeRoster2 = await getRosterStats(executeTrade(roster2, playersGained, playersLost), rosterConstruction, scoringFormat);
-    const resultsRoster1 = {};
-    const resultsRoster2 = {};
-    Object.keys(preTradeRoster1).forEach(metric => {
-        resultsRoster1[metric] = normalize(metric,postTradeRoster1[metric] - preTradeRoster1[metric]);
-    });
-    Object.keys(preTradeRoster2).forEach(metric => {
-        resultsRoster2[metric] = normalize(metric, postTradeRoster2[metric] - preTradeRoster2[metric]);
-    })
+    const [preTradeRoster1, preTradeRoster2, postTradeRoster1, postTradeRoster2] = await Promise.all([
+        getRosterStats(roster1, rosterConstruction, scoringFormat),
+        getRosterStats(roster2, rosterConstruction, scoringFormat),
+        getRosterStats(executeTrade(roster1, playersLost, playersGained), rosterConstruction, scoringFormat),
+        getRosterStats(executeTrade(roster2, playersGained, playersLost), rosterConstruction, scoringFormat)
+    ]);
+    const resultsRoster1 = Object.fromEntries(
+        Object.keys(preTradeRoster1).map(metric => [metric, normalize(metric, postTradeRoster1[metric] - preTradeRoster1[metric])])
+    );
+    const resultsRoster2 = Object.fromEntries(
+        Object.keys(preTradeRoster2).map(metric => [metric, normalize(metric, postTradeRoster2[metric] - preTradeRoster2[metric])])
+    );
     return {resultsRoster1, resultsRoster2};
 }
 
-async function getTradeWinner(rosterConstruction, playersLost, playersGained, roster1, roster2, scoringFormat){
-    const overallTradeGrades = [];
+async function getTradeWinner(rosterConstruction, playersLost, playersGained, roster1, roster2, scoringFormat) {
     const normalizedValues = await getTradeResults(rosterConstruction, playersLost, playersGained, roster1, roster2, scoringFormat);
-    Object.values(normalizedValues).forEach(rosterValues => {
+    const overallTradeGrades = Object.values(normalizedValues).map(rosterValues => {
         const normalizedGradeSum = Object.values(rosterValues).reduce((total, value) => total + value, 0);
-        const normalizedGradeAvg = normalizedGradeSum/Object.values(rosterValues).length;
-        overallTradeGrades.push(normalizedGradeAvg);
-    })
-    let tradeWinner;
-    if (overallTradeGrades[0] > overallTradeGrades[1]){
-        tradeWinner = "Your Team"
-    } else {
-        tradeWinner = "Trade Partner's Team"
-    }
+        return normalizedGradeSum / Object.values(rosterValues).length;
+    });
+    const [yourTeamGrade, tradePartnerGrade] = overallTradeGrades;
+    const tradeWinner = yourTeamGrade > tradePartnerGrade ? "Your Team" : "Trade Partner's Team";
     return {
         Winner: tradeWinner,
-        ["Your Team Overall Trade Grade"]: `${overallTradeGrades[0]}/10`,
-        ["Trade Partner's Overall Trade Grade"]: `${overallTradeGrades[1]}/10`,
-    }
+        "Your Team Overall Trade Grade": `${yourTeamGrade}/10`,
+        "Trade Partner's Overall Trade Grade": `${tradePartnerGrade}/10`,
+    };
 }
 
 function normalize(metric, value){
@@ -92,9 +95,9 @@ export {
     getTradeWinner
 }
 
-let rosCon = {"QB": 0, "WR": 0, "FLEX": 2}
-let a = ["Christian McCaffrey", "Davante Adams", "Breece Hall"];
-let b = ["J.K. Dobbins", "Justin Jefferson"];
+// let rosCon = {"QB": 0, "WR": 0, "FLEX": 2}
+// let a = ["Christian McCaffrey", "Davante Adams", "Breece Hall"];
+// let b = ["J.K. Dobbins", "Justin Jefferson"];
 // filterRoster(a, "FLEX", "PPR").then(r => console.log(r))
 // getStartingRoster(a, rosCon, "PPR").then(r => console.log(r))
 // getStartingRoster(b, rosCon, "PPR").then(r => console.log(r))
@@ -106,7 +109,7 @@ let b = ["J.K. Dobbins", "Justin Jefferson"];
 // getRosterStats(b, rosCon, "PPR").then(r => console.log(r));
 
 
-let asd = await getTradeResults(rosCon,["Christian McCaffrey"], ["J.K. Dobbins"], a, b);
-console.log(asd);
+// let asd = await getTradeResults(rosCon,["Christian McCaffrey"], ["J.K. Dobbins"], a, b);
+// console.log(asd);
 
 // getTradeWinner(rosCon,["Christian McCaffrey"], ["J.K. Dobbins"], a, b, "PPR").then(r => console.log(r));

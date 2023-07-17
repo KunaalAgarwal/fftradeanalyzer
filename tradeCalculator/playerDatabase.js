@@ -1,30 +1,30 @@
-// import localforage from 'https://cdn.skypack.dev/localforage';
+import localforage from 'https://cdn.skypack.dev/localforage';
 
 const apiKey = "80c1b2c71a4a4dd1aaf5db7cdd4e36d3";
 const baseUrl = "https://api.sportsdata.io/api/nfl/fantasy/json/";
 const year =  new Date().getFullYear();
-// const dbName = 'localforage';
-// const players = localforage.createInstance({
-//     name: dbName,
-//     storeName: "players"
-// })
+const dbName = 'localforage';
+const players = localforage.createInstance({
+    name: dbName,
+    storeName: "players"
+})
 
 async function getPlayerData(playerName, scoringFormat) {
     try {
         if (scoringFormat !== undefined && scoringFormat.toUpperCase() === "STANDARD"){
             scoringFormat = "";
         }
-        // const cacheKey = `${playerName.toUpperCase()}${scoringFormat}`;
-        // const cacheResponse = await players.getItem(cacheKey);
-        // if (cacheResponse !== null) {
-        //     return cacheResponse;
-        // }
+        const cacheKey = `${playerName.toUpperCase()}${scoringFormat}`;
+        const cacheResponse = await players.getItem(cacheKey);
+        if (cacheResponse !== null) {
+            return cacheResponse;
+        }
         const [playerObj, upside] = await Promise.all([
             getProjections(playerName, scoringFormat),
             getUpside(playerName, scoringFormat)
         ]);
         playerObj["upside"] = upside;
-        // players.setItem(cacheKey, playerObj);
+        players.setItem(cacheKey, playerObj);
         return playerObj;
     } catch (error) {
         console.log("An error occurred in the API request: " + error);
