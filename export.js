@@ -18,10 +18,12 @@ import {
     getRosterStats,
     executeTrade,
     getTradeResults,
-    getTradeWinner
+    getTradeWinner,
+    Plotly
 } from "./tradeCalculator/trade.js";
 
 export {
+    Plotly,
     getPlayerData,
     getPlayersList,
     clearCache,

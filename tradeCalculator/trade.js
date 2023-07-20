@@ -1,4 +1,7 @@
 import {normalizeGrade} from "./playerDatabase.js";
+import Plotly from 'https://cdn.jsdelivr.net/npm/plotly.js-dist/+esm';
+
+
 import {
     getAverageADP,
     getAverageProjection,
@@ -71,6 +74,12 @@ async function getTradeWinner(rosterConstruction, playersLost, playersGained, ro
     };
 }
 
+async function generateTradeGraphs(tradeResults){
+     const metrics = Object.keys(tradeResults);
+     const values = Object.values(tradeResults);
+     return {x: metrics, y: values}
+}
+
 function normalize(metric, value){
     switch (metric){
         case "avgADP": return 10 - normalizeGrade(value, -22, 22);
@@ -92,24 +101,7 @@ export {
     getRosterStats,
     executeTrade,
     getTradeResults,
-    getTradeWinner
+    getTradeWinner,
+    Plotly
 }
 
-// let rosCon = {"QB": 0, "WR": 0, "FLEX": 2}
-// let a = ["Christian McCaffrey", "Davante Adams", "Breece Hall"];
-// let b = ["J.K. Dobbins", "Justin Jefferson"];
-// filterRoster(a, "FLEX", "PPR").then(r => console.log(r))
-// getStartingRoster(a, rosCon, "PPR").then(r => console.log(r))
-// getStartingRoster(b, rosCon, "PPR").then(r => console.log(r))
-
-
-
-// executeTrade(["Christian McCaffery"], ["J.K. Dobbins"], a, b)
-// getRosterStats(a, rosCon, "PPR").then(r => console.log(r));
-// getRosterStats(b, rosCon, "PPR").then(r => console.log(r));
-
-
-// let asd = await getTradeResults(rosCon,["Christian McCaffrey"], ["J.K. Dobbins"], a, b);
-// console.log(asd);
-
-// getTradeWinner(rosCon,["Christian McCaffrey"], ["J.K. Dobbins"], a, b, "PPR").then(r => console.log(r));
