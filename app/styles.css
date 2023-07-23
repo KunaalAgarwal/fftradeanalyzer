@@ -25,6 +25,9 @@ h1 {
 }
 
 body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     padding-top: 80px; /* Add top padding to push the content below the header */
     margin: 0; /* Reset margin to remove the default spacing */
     background-color: lightgray;
@@ -49,6 +52,7 @@ body {
     margin-right: 12px;
     margin-left: 12px;
     height: 40px;
+    transition: border-bottom 0.1s ease;
 }
 
 .navButton:hover {
@@ -68,15 +72,20 @@ body {
     border-radius: 0 3px 3px 0;
 }
 
-/* Position the "next button" to the right */
 .next {
     right: 0;
     border-radius: 3px 0 0 3px;
 }
 
-/* On hover, add a black background color with a little bit see-through */
 .prev:hover, .next:hover {
     background-color: rgba(0,0,0,0.8);
 }
 
+footer {
+    margin-top: auto;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 16px;
+}
 
