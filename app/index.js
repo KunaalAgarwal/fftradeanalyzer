@@ -3,9 +3,15 @@ let currPageId = "sf";
 setup();
 
 function displayPage(id) {
-    // hide certain elements and display the proper ones
     currPageId = id;
     navbarUnderline(id);
+    ids.forEach(page => {
+        if (id === page) {
+            document.getElementById(page + "content").style.display = "block";
+        } else {
+            document.getElementById(page + "content").style.display = "none";
+        }
+    })
     if (currPageId === "sf") {
         document.getElementById("prev").style.display = "none";
     } else {
@@ -17,6 +23,7 @@ function displayPage(id) {
         document.getElementById("next").style.display = "block";
     }
 }
+
 
 function navbarUnderline(id) {
     ids.forEach(x => {
