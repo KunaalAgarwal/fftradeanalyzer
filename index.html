@@ -14,49 +14,56 @@
             <h1>Fantasy Football Trade Calculator</h1>
         </div>
         <nav class="inputsNav">
-            <a class="navButton" id="sf" onclick="displayPage('sf')">Scoring Format</a>
-            <a class="navButton" id="ros" onclick="displayPage('ros')">Rosters</a>
-            <a class="navButton" id="tc" onclick="displayPage('tc')">Trade Calculator</a>
-            <a class="navButton" id="results" onclick="displayPage('results')">Results</a>
+            <a class="navButton" id="sf">Scoring Format</a>
+            <a class="navButton" id="ros">Rosters</a>
+            <a class="navButton" id="tc">Trade Calculator</a>
+            <a class="navButton" id="results">Results</a>
         </nav>
     </header>
     <a class="prev" id="prev" onclick="prev()" aria-label="Previous">&#10094; Back</a>
     <a class="next" id="next" onclick="next()" aria-label="Next">&#10095; Next</a>
     <div id="sfcontent" class="sf">
+        <span id="scoringButton-error" class="error-message scoringButtonError"></span>
         <div class="scoringButtonContainer">
-            <button id="ppr" class="scoringButton">PPR</button>
-            <button id="standard" class="scoringButton">Standard</button>
+            <button id="ppr" class="scoringButton" onclick="parseScoringFormat('ppr')">PPR</button>
+            <button id="standard" class="scoringButton" onclick="parseScoringFormat('standard')">Standard</button>
         </div>
         <form class="ros-cons">
             <div class="formInput">
                 <input type="number" id = "qb-slots" required min="0" max="3">
-                <label for="qb-slots">QB Roster Slots</label>
+                <label for="qb-slots">QB Starting Roster Slots</label>
                 <span class="bar"></span>
+                <span id="qb-slots-error" class="error-message"></span>
             </div>
             <div class="formInput">
                 <input type="number" id = "rb-slots" required min="0" max="4">
-                <label for="rb-slots">RB Roster Slots</label>
+                <label for="rb-slots">RB Starting Roster Slots</label>
                 <span class="bar"></span>
+                <span id="rb-slots-error" class="error-message"></span>
             </div>
             <div class="formInput">
                 <input type="number" id = "wr-slots" required min="0" max="4">
-                <label for="wr-slots">WR Roster Slots</label>
+                <label for="wr-slots">WR Starting Roster Slots</label>
                 <span class="bar"></span>
+                <span id="wr-slots-error" class="error-message"></span>
             </div>
             <div class="formInput">
                 <input type="number" id = "te-slots" required min="0" max="2">
-                <label for="te-slots">TE Roster Slots</label>
+                <label for="te-slots">TE Starting Roster Slots</label>
                 <span class="bar"></span>
+                <span id="te-slots-error" class="error-message"></span>
             </div>
             <div class="formInput">
                 <input type="number" id = "flex-slots" required min="0" max="3">
-                <label for="flex-slots">FLEX Roster Slots</label>
+                <label for="flex-slots">FLEX Starting Roster Slots</label>
                 <span class="bar"></span>
+                <span id="flex-slots-error" class="error-message"></span>
             </div>
             <div class="formInput">
                 <input type="number" id = "bench-slots" required min="0" max="8">
                 <label for="bench-slots">Bench Roster Slots</label>
                 <span class="bar"></span>
+                <span id="bench-slots-error" class="error-message"></span>
             </div>
         </form>
     </div>

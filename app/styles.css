@@ -8,6 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 999;
 }
 
 .logo {
@@ -86,6 +87,13 @@ body {
     justify-content: center;
 }
 
+.scoringButtonError {
+    padding-top: 15px;
+    margin-bottom: -20px;
+    display: flex;
+    justify-content: center;
+}
+
 .scoringButton {
     margin: 5px;
     padding: 15px 30px;
@@ -103,13 +111,8 @@ body {
 
 .scoringButton:hover{
     cursor: pointer;
-    background-position: right center;
+    border-radius: 18px;
     color: #fff;
-}
-
-.scoringButtonClicked {
-    color: #fff;
-    transform: scale(0.95);
 }
 
 .ros-cons {
@@ -118,7 +121,6 @@ body {
     justify-content: center;
     align-items: center;
     padding: 30px;
-
 }
 
 footer {
