@@ -1,4 +1,4 @@
-const ids = ["sf", "ros", "tc", "results"];
+const ids = ["sf", "ros", "oppros", "tc", "results"];
 let scoringFormat;
 let currPageId = "sf";
 let rosterConstruction = {"QB": 0, "RB": 0, "WR": 0, "TE": 0, "FLEX": 0, "BENCH": 0};
@@ -23,9 +23,7 @@ function navbarUnderline(id) {
 
 function next() {
     const currIndex = ids.indexOf(currPageId);
-    if (currPageId === "sf") {
-        if (sfNextCheck()) {return;}
-    }
+    if (currPageId === "sf" && sfNextCheck()) return;
     if (currIndex + 1 < ids.length) {
         const newPage = ids[currIndex + 1];
         displayPage(newPage);
