@@ -90,14 +90,16 @@ function setRosterConstruction() {
 
 const addButton = document.getElementById("userAdd-player");
 const removeButton = document.getElementById("userRemove-player");
-const playerInputContainer = document.getElementById("ros-cons");
+const oppAddButton = document.getElementById("oppAdd-player");
+const oppRemoveButton = document.getElementById("oppRemove-player");
 
-let playerCounter = 6;
+let playerCounter = 1;
+let oppPlayerCounter = 1;
 
 addButton.addEventListener("click", () => {
     if (playerCounter <= 10) {
         const newPlayerInput = createPlayerInput(playerCounter);
-        playerInputContainer.appendChild(newPlayerInput);
+        document.getElementById("ros-cons").appendChild(newPlayerInput);
         playerCounter++;
     }
 });
@@ -105,8 +107,24 @@ addButton.addEventListener("click", () => {
 removeButton.addEventListener("click", () => {
     if (playerCounter > 1){
         playerCounter--;
-        const lastPlayerInput = playerInputContainer.lastChild;
-        playerInputContainer.removeChild(lastPlayerInput);
+        const lastPlayerInput = document.getElementById("ros-cons").lastChild;
+        document.getElementById("ros-cons").removeChild(lastPlayerInput);
+    }
+});
+
+oppAddButton.addEventListener("click", () => {
+    if (oppPlayerCounter <= 10) {
+        const newPlayerInput = createPlayerInput(playerCounter);
+        document.getElementById("oppros-cons").appendChild(newPlayerInput);
+        oppPlayerCounter++;
+    }
+});
+
+oppRemoveButton.addEventListener("click", () => {
+    if (oppPlayerCounter > 1){
+        oppPlayerCounter--;
+        const lastPlayerInput = document.getElementById("oppros-cons").lastChild;
+        document.getElementById("oppros-cons").removeChild(lastPlayerInput);
     }
 });
 
