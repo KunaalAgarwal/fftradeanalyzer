@@ -1,11 +1,9 @@
-import * as tc from "../export.js"
+// import * as tc from "../export.js"
+// const players = new Set(await tc.getPlayersList());
 const ids = ["sf", "ros", "oppros", "tc", "results"];
 let scoringFormat;
 let currPageId = "sf";
 let rosterConstruction = {"QB": 0, "RB": 0, "WR": 0, "TE": 0, "FLEX": 0, "BENCH": 0};
-const players = new Set(await tc.getPlayersList());
-console.log(players);
-
 setup();
 
 function displayPage(id) {
@@ -59,7 +57,7 @@ function prev() {
 }
 
 function setup() {
-    displayPage("sf");
+    displayPage("ros");
 }
 
 function parseScoringFormat(id) {
@@ -88,6 +86,52 @@ function setRosterConstruction() {
     }
 }
 
-function playerCheck(player){
-    return players.has(player);
+// ... (your existing imports and code) ...
+
+const addButton = document.getElementById("userAdd-player");
+const removeButton = document.getElementById("userRemove-player");
+const playerInputContainer = document.getElementById("ros-cons");
+
+let playerCounter = 6;
+
+addButton.addEventListener("click", () => {
+    if (playerCounter <= 10) {
+        const newPlayerInput = createPlayerInput(playerCounter);
+        playerInputContainer.appendChild(newPlayerInput);
+        playerCounter++;
+    }
+});
+
+removeButton.addEventListener("click", () => {
+    if (playerCounter > 1){
+        playerCounter--;
+        const lastPlayerInput = playerInputContainer.lastChild;
+        playerInputContainer.removeChild(lastPlayerInput);
+    }
+});
+
+function createPlayerInput(counter) {
+    const newPlayerInput = document.createElement("div");
+    newPlayerInput.className = "formInput";
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.id = `userRos${counter}`;
+    input.required = true;
+
+    const label = document.createElement("label");
+    label.htmlFor = `userRos${counter}`;
+    label.textContent = "Enter a player";
+
+    const errorSpan = document.createElement("span");
+    errorSpan.className = "error-message";
+    errorSpan.id = `userRos${counter}Error`;
+
+    newPlayerInput.appendChild(input);
+    newPlayerInput.appendChild(label);
+    newPlayerInput.appendChild(errorSpan);
+    return newPlayerInput;
 }
+
+
+

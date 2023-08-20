@@ -123,6 +123,11 @@ body {
     padding: 30px;
 }
 
+.ros {
+    display: flex;
+    align-content: center;
+}
+
 footer {
     margin-top: auto;
     background-color: #333;
