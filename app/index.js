@@ -1,7 +1,11 @@
+import * as tc from "../export.js"
 const ids = ["sf", "ros", "oppros", "tc", "results"];
 let scoringFormat;
 let currPageId = "sf";
 let rosterConstruction = {"QB": 0, "RB": 0, "WR": 0, "TE": 0, "FLEX": 0, "BENCH": 0};
+const players = new Set(await tc.getPlayersList());
+console.log(players);
+
 setup();
 
 function displayPage(id) {
@@ -82,4 +86,8 @@ function setRosterConstruction() {
     for (let position in rosterConstruction) {
         rosterConstruction[position] = parseRosterCon(`${position.toLowerCase()}-slots`);
     }
+}
+
+function playerCheck(player){
+    return players.has(player);
 }
