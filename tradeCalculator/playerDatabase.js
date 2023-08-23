@@ -4,6 +4,7 @@ const apiKey = "80c1b2c71a4a4dd1aaf5db7cdd4e36d3";
 const baseUrl = "https://api.sportsdata.io/api/nfl/fantasy/json/";
 const year =  new Date().getFullYear();
 const dbName = 'localforage';
+
 const players = localforage.createInstance({
     name: dbName,
     storeName: "players"

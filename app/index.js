@@ -1,9 +1,8 @@
-// import * as tc from "../export.js"
-// const players = new Set(await tc.getPlayersList());
 const ids = ["sf", "ros", "oppros", "tc", "results"];
 let scoringFormat;
 let currPageId = "sf";
 let rosterConstruction = {"QB": 0, "RB": 0, "WR": 0, "TE": 0, "FLEX": 0, "BENCH": 0};
+
 setup();
 
 function displayPage(id) {
@@ -86,8 +85,6 @@ function setRosterConstruction() {
     }
 }
 
-// ... (your existing imports and code) ...
-
 const addButton = document.getElementById("userAdd-player");
 const removeButton = document.getElementById("userRemove-player");
 const oppAddButton = document.getElementById("oppAdd-player");
@@ -150,6 +147,4 @@ function createPlayerInput(counter) {
     newPlayerInput.appendChild(errorSpan);
     return newPlayerInput;
 }
-
-
 
