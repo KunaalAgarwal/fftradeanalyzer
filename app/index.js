@@ -1,9 +1,14 @@
+import * as tc from "../export.js"
 const ids = ["sf", "ros", "oppros", "tc", "results"];
 let scoringFormat;
 let currPageId = "sf";
+displayPage("sf");
 let rosterConstruction = {"QB": 0, "RB": 0, "WR": 0, "TE": 0, "FLEX": 0, "BENCH": 0};
+const nextButton = document.getElementById("next");
+const prevButton = document.getElementById("prev");
+const pprButton = document.getElementById("ppr");
+const standardButton = document.getElementById("standard");
 
-setup();
 
 function displayPage(id) {
     currPageId = id;
@@ -22,14 +27,40 @@ function navbarUnderline(id) {
     });
 }
 
-function next() {
+nextButton.addEventListener("click", () => {
     const currIndex = ids.indexOf(currPageId);
     if (currPageId === "sf" && sfNextCheck()) return;
     if (currIndex + 1 < ids.length) {
         const newPage = ids[currIndex + 1];
         displayPage(newPage);
     }
-}
+})
+
+prevButton.addEventListener("click", () => {
+    const currIndex = ids.indexOf(currPageId);
+    if (currIndex - 1 >= 0) {
+        const newPage = ids[currIndex - 1];
+        displayPage(newPage);
+    }
+})
+
+pprButton.addEventListener("click", () => {
+    scoringFormat = "PPR"
+    const scoringButtons = document.querySelectorAll(".scoringButton");
+    scoringButtons.forEach(button => {
+        button.style.borderRadius = button.id === "ppr" ? "18px" : "10px";
+        button.style.color = button.id === "ppr" ? "#fff" : "#666666";
+    });
+})
+
+standardButton.addEventListener("click", () => {
+    scoringFormat = "STANDARD"
+    const scoringButtons = document.querySelectorAll(".scoringButton");
+    scoringButtons.forEach(button => {
+        button.style.borderRadius = button.id === "standard" ? "18px" : "10px";
+        button.style.color = button.id === "standard" ? "#fff" : "#666666";
+    });
+})
 
 function sfNextCheck(){
     let hasErrors = false;
@@ -45,27 +76,6 @@ function sfNextCheck(){
         }
     })
     return hasErrors;
-}
-
-function prev() {
-    const currIndex = ids.indexOf(currPageId);
-    if (currIndex - 1 >= 0) {
-        const newPage = ids[currIndex - 1];
-        displayPage(newPage);
-    }
-}
-
-function setup() {
-    displayPage("sf");
-}
-
-function parseScoringFormat(id) {
-    const scoringButtons = document.querySelectorAll(".scoringButton");
-    scoringButtons.forEach(button => {
-        button.style.borderRadius = button.id === id ? "18px" : "10px";
-        button.style.color = button.id === id ? "#fff" : "#666666";
-    });
-    scoringFormat = id.toUpperCase();
 }
 
 function parseRosterCon(id) {

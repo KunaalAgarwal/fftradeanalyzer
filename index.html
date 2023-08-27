@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fantasy Football Trade Calculator</title>
     <link rel="stylesheet" href="app/styles.css">
+    <script type="module" src="app/index.js"></script>
 </head>
 
 <body>
@@ -21,13 +22,13 @@
             <a class="navButton" id="results">Results</a>
         </nav>
     </header>
-    <a class="prev" id="prev" onclick="prev()" aria-label="Previous">&#10094; Back</a>
-    <a class="next" id="next" onclick="next()" aria-label="Next">&#10095; Next</a>
+    <a class="prev" id="prev" aria-label="Previous">&#10094; Back</a>
+    <a class="next" id="next" aria-label="Next">&#10095; Next</a>
     <div id="sfcontent" class="sf">
         <span id="scoringButton-error" class="error-message scoringButtonError"></span>
         <div class="scoringButtonContainer">
-            <button id="ppr" class="scoringButton" onclick="parseScoringFormat('ppr')">PPR</button>
-            <button id="standard" class="scoringButton" onclick="parseScoringFormat('standard')">Standard</button>
+            <button id="ppr" class="scoringButton">PPR</button>
+            <button id="standard" class="scoringButton">Standard</button>
         </div>
         <form class="ros-cons">
             <div class="formInput">
@@ -103,7 +104,6 @@
         <p>&copy; 2023 Fantasy Football Trade Calculator</p>
     </footer>
 </body>
-<script src="app/index.js"></script>
 </html>
 
 
