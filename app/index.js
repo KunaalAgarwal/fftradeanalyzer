@@ -5,6 +5,8 @@ let currPageId = "sf";
 let rosterConstruction = {"QB": 0, "RB": 0, "WR": 0, "TE": 0, "FLEX": 0, "BENCH": 0};
 let ros = new Set();
 let oppros = new Set();
+let tradeaway = new Set();
+let tradefor = new Set();
 displayPage("tc");
 
 const nextButton = document.getElementById("next");
@@ -38,6 +40,7 @@ nextButton.addEventListener("click", async () => {
     if (currPageId === "sf" && sfNextCheck()) return;
     if (currPageId === "ros" && await rosNextCheck()) return;
     if (currPageId === "oppros" && await rosNextCheck()) return;
+    if (currPageId === "tc") parseTrade();
     if (currIndex + 1 < ids.length) {
         if (currPageId === "oppros") setPlayerSelect();
         displayPage(ids[currIndex + 1]);
@@ -200,3 +203,14 @@ function toggleSelection(event) {
     const itemElement = event.target;
     itemElement.classList.toggle("selected");
 }
+
+function parseTrade(){
+    document.getElementById("tradeaway").querySelectorAll(".selected").forEach(player => {
+        tradeaway.add(player.innerText);
+    })
+    document.getElementById("tradefor").querySelectorAll(".selected").forEach(player => {
+        tradefor.add(player.innerText);
+    })
+}
+
+
