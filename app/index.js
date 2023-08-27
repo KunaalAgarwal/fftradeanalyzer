@@ -5,7 +5,7 @@ let currPageId = "sf";
 let rosterConstruction = {"QB": 0, "RB": 0, "WR": 0, "TE": 0, "FLEX": 0, "BENCH": 0};
 let ros = new Set();
 let oppros = new Set();
-displayPage("sf");
+displayPage("tc");
 
 const nextButton = document.getElementById("next");
 const prevButton = document.getElementById("prev");
@@ -39,8 +39,8 @@ nextButton.addEventListener("click", async () => {
     if (currPageId === "ros" && await rosNextCheck()) return;
     if (currPageId === "oppros" && await rosNextCheck()) return;
     if (currIndex + 1 < ids.length) {
-        const newPage = ids[currIndex + 1];
-        displayPage(newPage);
+        if (currPageId === "oppros") setPlayerSelect();
+        displayPage(ids[currIndex + 1]);
     }
 })
 
@@ -169,6 +169,8 @@ async function rosNextCheck(){
         const errorSpan = player.querySelector(".error-message");
         if (!playerList.has(val) || ros.has(val) || oppros.has(val)){
             errorSpan.textContent = "Please enter a valid player name or check spelling."
+            if (currPageId === "ros") ros.clear();
+            if (currPageId === "oppros") oppros.clear();
             hasErrors = true;
         } else {
             errorSpan.textContent = "";
@@ -177,4 +179,24 @@ async function rosNextCheck(){
         }
     })
     return hasErrors;
+}
+
+function setPlayerSelect(){
+    populateColumn(document.getElementById("tradeaway"), ros);
+    populateColumn(document.getElementById("tradefor"), oppros);
+}
+
+function populateColumn(column, dataset) {
+    for (let item of dataset){
+        const itemElement = document.createElement("div");
+        itemElement.classList.add("item");
+        itemElement.textContent = item;
+        itemElement.addEventListener("click", toggleSelection);
+        column.appendChild(itemElement);
+    }
+}
+
+function toggleSelection(event) {
+    const itemElement = event.target;
+    itemElement.classList.toggle("selected");
 }
