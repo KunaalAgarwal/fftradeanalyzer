@@ -2,13 +2,19 @@ import * as tc from "../export.js"
 const ids = ["sf", "ros", "oppros", "tc", "results"];
 let scoringFormat;
 let currPageId = "sf";
-displayPage("sf");
 let rosterConstruction = {"QB": 0, "RB": 0, "WR": 0, "TE": 0, "FLEX": 0, "BENCH": 0};
+let ros = new Set();
+let oppros = new Set();
+displayPage("sf");
+
 const nextButton = document.getElementById("next");
 const prevButton = document.getElementById("prev");
 const pprButton = document.getElementById("ppr");
 const standardButton = document.getElementById("standard");
-
+const addButton = document.getElementById("userAdd-player");
+const removeButton = document.getElementById("userRemove-player");
+const oppAddButton = document.getElementById("oppAdd-player");
+const oppRemoveButton = document.getElementById("oppRemove-player");
 
 function displayPage(id) {
     currPageId = id;
@@ -27,9 +33,11 @@ function navbarUnderline(id) {
     });
 }
 
-nextButton.addEventListener("click", () => {
+nextButton.addEventListener("click", async () => {
     const currIndex = ids.indexOf(currPageId);
     if (currPageId === "sf" && sfNextCheck()) return;
+    if (currPageId === "ros" && await rosNextCheck()) return;
+    if (currPageId === "oppros" && await rosNextCheck()) return;
     if (currIndex + 1 < ids.length) {
         const newPage = ids[currIndex + 1];
         displayPage(newPage);
@@ -38,6 +46,8 @@ nextButton.addEventListener("click", () => {
 
 prevButton.addEventListener("click", () => {
     const currIndex = ids.indexOf(currPageId);
+    if (currPageId === "oppros") ros.clear(); //one page ahead
+    if (currPageId === "tc") oppros.clear(); //one page ahead
     if (currIndex - 1 >= 0) {
         const newPage = ids[currIndex - 1];
         displayPage(newPage);
@@ -70,17 +80,13 @@ function sfNextCheck(){
         document.getElementById("scoringButton-error").textContent = "";
     }
     setRosterConstruction();
-    document.querySelectorAll(".error-message").forEach(error => {
-        if (!(error.textContent === "")){
-            hasErrors = true;
-        }
-    })
+    document.querySelectorAll(".error-message").forEach(error => { if (!(error.textContent === "")) hasErrors = true;})
     return hasErrors;
 }
 
 function parseRosterCon(id) {
     const element = document.getElementById(id);
-    const positionSlots = parseInt(element.value, 10);
+    const positionSlots = parseInt(element.value);
     if (positionSlots < element.min || positionSlots > element.max || isNaN(positionSlots)) {
         document.getElementById(`${id}-error`).textContent = "Please enter a valid number.";
     } else {
@@ -95,14 +101,8 @@ function setRosterConstruction() {
     }
 }
 
-const addButton = document.getElementById("userAdd-player");
-const removeButton = document.getElementById("userRemove-player");
-const oppAddButton = document.getElementById("oppAdd-player");
-const oppRemoveButton = document.getElementById("oppRemove-player");
-
 let playerCounter = 1;
 let oppPlayerCounter = 1;
-
 addButton.addEventListener("click", () => {
     if (playerCounter <= 10) {
         const newPlayerInput = createPlayerInput(playerCounter);
@@ -137,24 +137,44 @@ oppRemoveButton.addEventListener("click", () => {
 
 function createPlayerInput(counter) {
     const newPlayerInput = document.createElement("div");
-    newPlayerInput.className = "formInput";
+    newPlayerInput.classList.add("formInput");
+    newPlayerInput.classList.add(`${currPageId}Player`);
 
     const input = document.createElement("input");
     input.type = "text";
-    input.id = `userRos${counter}`;
+    input.id = `${currPageId}${counter}`;
     input.required = true;
 
     const label = document.createElement("label");
-    label.htmlFor = `userRos${counter}`;
+    label.htmlFor = `${currPageId}${counter}`;
     label.textContent = "Enter a player";
 
-    const errorSpan = document.createElement("span");
-    errorSpan.className = "error-message";
-    errorSpan.id = `userRos${counter}Error`;
+    const errorParagraph = document.createElement("p");
+    errorParagraph.className = "error-message";
+    errorParagraph.id = `${currPageId}${counter}Error`;
 
     newPlayerInput.appendChild(input);
     newPlayerInput.appendChild(label);
-    newPlayerInput.appendChild(errorSpan);
+    newPlayerInput.appendChild(errorParagraph);
+
     return newPlayerInput;
 }
 
+async function rosNextCheck(){
+    let hasErrors = false;
+    const playerList = new Set(await tc.getPlayersList());
+    const playerInputs = document.querySelectorAll(`.${currPageId}Player`);
+    playerInputs.forEach(player => {
+        const val = player.querySelector("input").value
+        const errorSpan = player.querySelector(".error-message");
+        if (!playerList.has(val) || ros.has(val) || oppros.has(val)){
+            errorSpan.textContent = "Please enter a valid player name or check spelling."
+            hasErrors = true;
+        } else {
+            errorSpan.textContent = "";
+            if (currPageId === "ros") ros.add(val);
+            if (currPageId === "oppros") oppros.add(val);
+        }
+    })
+    return hasErrors;
+}
