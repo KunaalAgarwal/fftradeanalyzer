@@ -29,6 +29,8 @@ function displayPage(id) {
     });
     document.getElementById("prev").style.display = currPageId === "sf" ? "none" : "block";
     document.getElementById("next").style.display = currPageId === "tc" ? "none" : "block";
+    document.getElementById("next").style.display = currPageId === "results" ? "none" : "block";
+
 }
 
 function navbarUnderline(id) {
@@ -43,7 +45,6 @@ nextButton.addEventListener("click", async () => {
     if (currPageId === "sf" && sfNextCheck()) return;
     if (currPageId === "ros" && await rosNextCheck()) return;
     if (currPageId === "oppros" && await rosNextCheck()) return;
-    if (currPageId === "tc") parseTrade();
     if (currIndex + 1 < ids.length) {
         if (currPageId === "oppros") setPlayerSelect();
         displayPage(ids[currIndex + 1]);
@@ -214,13 +215,22 @@ function parseTrade(){
     document.getElementById("tradefor").querySelectorAll(".selected").forEach(player => {
         tradefor.add(player.innerText.trim());
     })
+    console.log(tradeaway)
+    console.log(tradefor)
 }
 
 async function executeTrade(){
+    console.log(rosterConstruction)
+    console.log(Array.from(tradeaway));
+    console.log(Array.from(tradefor));
+    console.log(Array.from(ros));
+    console.log(Array.from(oppros));
+    console.log(scoringFormat)
     return [await getTradeWinner(rosterConstruction, Array.from(tradeaway), Array.from(tradefor), Array.from(ros), Array.from(oppros), scoringFormat),
         await getTradeResults(rosterConstruction, Array.from(tradeaway), Array.from(tradefor), Array.from(ros), Array.from(oppros), scoringFormat)];
 }
 evalButton.addEventListener("click", async () => {
+    parseTrade();
     displayPage("results")
     console.log(await executeTrade());
 })
