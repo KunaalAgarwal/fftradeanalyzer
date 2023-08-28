@@ -9,7 +9,7 @@ let ros = new Set();
 let oppros = new Set();
 let tradeaway = new Set();
 let tradefor = new Set();
-displayPage("tc");
+displayPage("sf");
 
 const nextButton = document.getElementById("next");
 const prevButton = document.getElementById("prev");
