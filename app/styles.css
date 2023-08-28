@@ -200,7 +200,6 @@ input:focus ~ .bar:before, input:focus ~ .bar:after {
     width:50%;
 }
 
-
 .player-select-container {
     display: flex;
     justify-content: center;
@@ -237,7 +236,7 @@ input:focus ~ .bar:before, input:focus ~ .bar:after {
     transition: background-color 0.2s;
     border-radius: 20px;
     display: inline-block;
-    background-color: #f0f0f0;
+    background-color: #dad5d5;
     padding: 20px;
     white-space: nowrap;
 }
@@ -246,3 +245,10 @@ input:focus ~ .bar:before, input:focus ~ .bar:after {
     background-color: #FF512F;
     color: #fff;
 }
+
+.evalButtonContainer {
+    display: flex;
+    margin-top: 10px;
+    justify-content: center;
+}
+

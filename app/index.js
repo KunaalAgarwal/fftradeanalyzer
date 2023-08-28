@@ -1,4 +1,6 @@
-import * as tc from "../export.js"
+import {getPlayersList} from "../tradeCalculator/playerDatabase.js";
+import {getTradeResults, getTradeWinner} from "../tradeCalculator/trade.js";
+
 const ids = ["sf", "ros", "oppros", "tc", "results"];
 let scoringFormat;
 let currPageId = "sf";
@@ -17,6 +19,7 @@ const addButton = document.getElementById("userAdd-player");
 const removeButton = document.getElementById("userRemove-player");
 const oppAddButton = document.getElementById("oppAdd-player");
 const oppRemoveButton = document.getElementById("oppRemove-player");
+const evalButton = document.getElementById("evalButton");
 
 function displayPage(id) {
     currPageId = id;
@@ -25,7 +28,7 @@ function displayPage(id) {
         document.getElementById(`${page}content`).style.display = id === page ? "block" : "none";
     });
     document.getElementById("prev").style.display = currPageId === "sf" ? "none" : "block";
-    document.getElementById("next").style.display = currPageId === "results" ? "none" : "block";
+    document.getElementById("next").style.display = currPageId === "tc" ? "none" : "block";
 }
 
 function navbarUnderline(id) {
@@ -165,7 +168,7 @@ function createPlayerInput(counter) {
 
 async function rosNextCheck(){
     let hasErrors = false;
-    const playerList = new Set(await tc.getPlayersList());
+    const playerList = new Set(await getPlayersList());
     const playerInputs = document.querySelectorAll(`.${currPageId}Player`);
     playerInputs.forEach(player => {
         const val = player.querySelector("input").value
@@ -206,11 +209,18 @@ function toggleSelection(event) {
 
 function parseTrade(){
     document.getElementById("tradeaway").querySelectorAll(".selected").forEach(player => {
-        tradeaway.add(player.innerText);
+        tradeaway.add(player.innerText.trim());
     })
     document.getElementById("tradefor").querySelectorAll(".selected").forEach(player => {
-        tradefor.add(player.innerText);
+        tradefor.add(player.innerText.trim());
     })
 }
 
-
+async function executeTrade(){
+    return [await getTradeWinner(rosterConstruction, Array.from(tradeaway), Array.from(tradefor), Array.from(ros), Array.from(oppros), scoringFormat),
+        await getTradeResults(rosterConstruction, Array.from(tradeaway), Array.from(tradefor), Array.from(ros), Array.from(oppros), scoringFormat)];
+}
+evalButton.addEventListener("click", async () => {
+    displayPage("results")
+    console.log(await executeTrade());
+})
