@@ -237,9 +237,13 @@ function parseTrade(){
 }
 
 async function executeTrade() {
+    const tradeResultsContainer = document.getElementById('tradeResultsContainer');
+    const loadingScreen = document.getElementById("loading-container")
+    loadingScreen.style.display = 'flex';
+    tradeResultsContainer.style.display = 'none';
+
     const tradeResults = Object.values(await getTradeWinner(rosterConstruction, Array.from(tradeaway), Array.from(tradefor), Array.from(ros), Array.from(oppros), scoringFormat));
     const tradeMetrics = await getTradeResults(rosterConstruction, Array.from(tradeaway), Array.from(tradefor), Array.from(ros), Array.from(oppros), scoringFormat)
-    const tradeResultsContainer = document.getElementById('tradeResultsContainer');
 
     const tradeWinnerElement = document.createElement('div');
     tradeWinnerElement.classList.add('trade-winner');
@@ -267,6 +271,8 @@ async function executeTrade() {
 
         tradeResultsContainer.appendChild(rosterElement);
     }
+    tradeResultsContainer.style.display = 'block'
+    loadingScreen.style.display = 'none';
 }
 
 evalButton.addEventListener('click', async () => {
