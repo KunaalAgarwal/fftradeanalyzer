@@ -9,10 +9,11 @@ let ros = new Set();
 let oppros = new Set();
 let tradeaway = new Set();
 let tradefor = new Set();
-displayPage("sf");
 
 const nextButton = document.getElementById("next");
 const prevButton = document.getElementById("prev");
+displayPage("sf");
+
 const pprButton = document.getElementById("ppr");
 const standardButton = document.getElementById("standard");
 const addButton = document.getElementById("userAdd-player");
@@ -27,10 +28,10 @@ function displayPage(id) {
     ids.forEach(page => {
         document.getElementById(`${page}content`).style.display = id === page ? "block" : "none";
     });
-    document.getElementById("prev").style.display = currPageId === "sf" ? "none" : "block";
-    document.getElementById("next").style.display = currPageId === "tc" ? "none" : "block";
-    document.getElementById("next").style.display = currPageId === "results" ? "none" : "block";
-
+    if (currPageId === "tc" || currPageId === "results") nextButton.style.display = "none";
+    else nextButton.style.display = "block";
+    if (currPageId === "results" || currPageId === "sf") prevButton.style.display = "none";
+    else prevButton.style.display = "block";
 }
 
 function navbarUnderline(id) {
@@ -48,15 +49,23 @@ nextButton.addEventListener("click", async () => {
     if (currIndex + 1 < ids.length) {
         if (currPageId === "oppros") setPlayerSelect();
         displayPage(ids[currIndex + 1]);
+        currPageId = ids[currIndex + 1];
     }
 })
 
 prevButton.addEventListener("click", () => {
     const currIndex = ids.indexOf(currPageId);
-    if (currPageId === "oppros") ros.clear(); //one page ahead
-    if (currPageId === "tc") oppros.clear(); //one page ahead
+    if (currPageId === "oppros") {
+        ros.clear();
+        clearPlayerSelect();
+    }
+    if (currPageId === "tc") {
+        oppros.clear();
+        clearPlayerSelect();
+    }
     if (currIndex - 1 >= 0) {
         const newPage = ids[currIndex - 1];
+        currPageId = ids[currIndex - 1];
         displayPage(newPage);
     }
 })
@@ -188,6 +197,11 @@ async function rosNextCheck(){
     return hasErrors;
 }
 
+function clearPlayerInput(){
+    document.getElementById("oppros-cons").innerHTML = ""
+    document.getElementById("ros-cons").innerHTML = ""
+}
+
 function setPlayerSelect(){
     populateColumn(document.getElementById("tradeaway"), ros);
     populateColumn(document.getElementById("tradefor"), oppros);
@@ -208,6 +222,11 @@ function toggleSelection(event) {
     itemElement.classList.toggle("selected");
 }
 
+function clearPlayerSelect(){
+    document.getElementById("tradeaway").innerHTML = "";
+    document.getElementById("tradefor").innerHTML = "";
+}
+
 function parseTrade(){
     document.getElementById("tradeaway").querySelectorAll(".selected").forEach(player => {
         tradeaway.add(player.innerText.trim());
@@ -215,22 +234,58 @@ function parseTrade(){
     document.getElementById("tradefor").querySelectorAll(".selected").forEach(player => {
         tradefor.add(player.innerText.trim());
     })
-    console.log(tradeaway)
-    console.log(tradefor)
 }
 
-async function executeTrade(){
-    console.log(rosterConstruction)
-    console.log(Array.from(tradeaway));
-    console.log(Array.from(tradefor));
-    console.log(Array.from(ros));
-    console.log(Array.from(oppros));
-    console.log(scoringFormat)
-    return [await getTradeWinner(rosterConstruction, Array.from(tradeaway), Array.from(tradefor), Array.from(ros), Array.from(oppros), scoringFormat),
-        await getTradeResults(rosterConstruction, Array.from(tradeaway), Array.from(tradefor), Array.from(ros), Array.from(oppros), scoringFormat)];
+async function executeTrade() {
+    const tradeResults = Object.values(await getTradeWinner(rosterConstruction, Array.from(tradeaway), Array.from(tradefor), Array.from(ros), Array.from(oppros), scoringFormat));
+    const tradeMetrics = await getTradeResults(rosterConstruction, Array.from(tradeaway), Array.from(tradefor), Array.from(ros), Array.from(oppros), scoringFormat)
+    const tradeResultsContainer = document.getElementById('tradeResultsContainer');
+
+    const tradeWinnerElement = document.createElement('div');
+    tradeWinnerElement.classList.add('trade-winner');
+    tradeWinnerElement.textContent = `Trade Winner: ${tradeResults[0]}`;
+    tradeResultsContainer.appendChild(tradeWinnerElement);
+
+    const tradeGradesElement = document.createElement('div');
+    tradeGradesElement.classList.add('trade-grades');
+    tradeGradesElement.textContent = `Your Team Overall Trade Grade: ${tradeResults[1]} | Trade Partner's Overall Trade Grade: ${tradeResults[2]}`;
+    tradeResultsContainer.appendChild(tradeGradesElement);
+
+    for (let resultObj in tradeMetrics) {
+        const rosterElement = document.createElement('div');
+        rosterElement.classList.add('roster-section');
+        const rosterLabelElement = document.createElement('div');
+        if (resultObj === "resultsRoster1") rosterLabelElement.textContent = "User Roster:";
+        else rosterLabelElement.textContent = "Trade Partner Roster:"
+        rosterElement.appendChild(rosterLabelElement);
+
+        const values = Object.values(tradeMetrics[resultObj]);
+        const rosterStatsElement = document.createElement('div');
+        rosterStatsElement.classList.add('roster-stats');
+        rosterStatsElement.textContent = `Total Projection: ${values[0]}/10 | Average Projection: ${values[1]}/10 | Average Upside: ${values[2]}/10 | Average Value: ${values[3]}/10 | Average ADP: ${values[4]}/10`;
+        rosterElement.appendChild(rosterStatsElement);
+
+        tradeResultsContainer.appendChild(rosterElement);
+    }
 }
-evalButton.addEventListener("click", async () => {
+
+evalButton.addEventListener('click', async () => {
     parseTrade();
-    displayPage("results")
-    console.log(await executeTrade());
+    displayPage('results');
+    await executeTrade();
+});
+
+function clearResults(){
+    const tradeResultsContainer = document.getElementById('tradeResultsContainer');
+    tradeResultsContainer.innerHTML = '';
+}
+
+document.getElementById("reset").addEventListener("click", () => {
+    currPageId = "sf";
+    displayPage("sf");
+    ros.clear();
+    oppros.clear();
+    clearPlayerSelect();
+    clearPlayerInput();
+    clearResults();
 })

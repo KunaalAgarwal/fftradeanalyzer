@@ -53,6 +53,7 @@ function getAverageValue(startingRoster, rosterSize){
 function getAverageUpside(startingRoster, rosterSize){
     const totalUpside = startingRoster.reduce((total, player) => total + player["upside"], 0);
     return totalUpside/rosterSize;
+
 }
 
 function setRosterConstruction(rosterSlots) {

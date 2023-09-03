@@ -69,7 +69,7 @@ async function getUpside(playerName, scoringFormat = ""){
 
 function normalizeGrade(grade, minGrade, maxGrade) {
     const normalizedScore = (grade - minGrade) / (maxGrade - minGrade) * 10;
-    return Math.max(0, Math.min(10, normalizedScore));
+    return parseFloat(Math.max(0, Math.min(10, normalizedScore)).toFixed(2));
 }
 
 async function getMaxWeekScore(playerName, scoringFormat = "") {
@@ -91,7 +91,9 @@ async function getMaxWeekScore(playerName, scoringFormat = "") {
         week++;
     }
     await Promise.all(promises);
-    return weeklyScores.reduce((a,b) => Math.max(a,b), 0);
+    const score = weeklyScores.reduce((a,b) => Math.max(a,b), 0);
+    if (score === 0) return 15.0;
+    return score;
 }
 
 async function getPosition(playerName){

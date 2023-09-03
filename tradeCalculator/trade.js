@@ -61,16 +61,19 @@ async function getTradeResults(rosterConstruction, playersLost, playersGained, r
 
 async function getTradeWinner(rosterConstruction, playersLost, playersGained, roster1, roster2, scoringFormat) {
     const normalizedValues = await getTradeResults(rosterConstruction, playersLost, playersGained, roster1, roster2, scoringFormat);
-    const overallTradeGrades = Object.values(normalizedValues).map(rosterValues => {
-        const normalizedGradeSum = Object.values(rosterValues).reduce((total, value) => total + value, 0);
-        return normalizedGradeSum / Object.values(rosterValues).length;
-    });
-    const [yourTeamGrade, tradePartnerGrade] = overallTradeGrades;
+    const overallGrades = [];
+    Object.values(normalizedValues).forEach(allGrades => {
+        const ros = Object.values(allGrades);
+        const sum = ros.reduce((total, value) => total + value, 0);
+        overallGrades.push(sum/ros.length);
+    })
+
+    const [yourTeamGrade, tradePartnerGrade] = overallGrades;
     const tradeWinner = yourTeamGrade > tradePartnerGrade ? "Your Team" : "Trade Partner's Team";
     return {
         Winner: tradeWinner,
-        "Your Team Overall Trade Grade": `${yourTeamGrade}/10`,
-        "Trade Partner's Overall Trade Grade": `${tradePartnerGrade}/10`,
+        "Your Team Overall Trade Grade": `${yourTeamGrade.toFixed(2)}/10`,
+        "Trade Partner's Overall Trade Grade": `${tradePartnerGrade.toFixed(2)}/10`,
     };
 }
 

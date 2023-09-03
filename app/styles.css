@@ -252,3 +252,55 @@ input:focus ~ .bar:before, input:focus ~ .bar:after {
     justify-content: center;
 }
 
+.results-center {
+    display: flex;
+    justify-content: center;
+}
+
+.results-background {
+    margin-top: 20px;
+    width: 80%;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.results-container {
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.trade-winner {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #FF512F;
+}
+
+.trade-grades {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.results .roster-results {
+    font-size: 16px;
+}
+
+.results .roster-section {
+    margin-top: 20px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+}
+
+.results .roster-label {
+    font-weight: normal;
+    margin-right: 10px;
+}
+
+
+
+
