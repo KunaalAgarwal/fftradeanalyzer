@@ -25,77 +25,89 @@
     <a class="prev" id="prev" aria-label="Previous">&#10094; Back</a>
     <a class="next" id="next" aria-label="Next">&#10095; Next</a>
     <div id="sfcontent" class="sf">
-        <span id="scoringButton-error" class="error-message scoringButtonError"></span>
-        <div class="scoringButtonContainer">
-            <button id="ppr" class="scoringButton">PPR</button>
-            <button id="standard" class="scoringButton">Standard</button>
+        <div class="container">
+            <div class="background">
+                <span id="scoringButton-error" class="error-message scoringButtonError"></span>
+                <div class="scoringButtonContainer">
+                    <button id="ppr" class="scoringButton">PPR</button>
+                    <button id="standard" class="scoringButton">Standard</button>
+                </div>
+                <form class="ros-cons">
+                    <div class="formInput">
+                        <input type="number" id = "qb-slots" required min="0" max="3">
+                        <label for="qb-slots">QB Starting Roster Slots</label>
+                        <span class="bar"></span>
+                        <span id="qb-slots-error" class="error-message"></span>
+                    </div>
+                    <div class="formInput">
+                        <input type="number" id = "rb-slots" required min="0" max="4">
+                        <label for="rb-slots">RB Starting Roster Slots</label>
+                        <span class="bar"></span>
+                        <span id="rb-slots-error" class="error-message"></span>
+                    </div>
+                    <div class="formInput">
+                        <input type="number" id = "wr-slots" required min="0" max="4">
+                        <label for="wr-slots">WR Starting Roster Slots</label>
+                        <span class="bar"></span>
+                        <span id="wr-slots-error" class="error-message"></span>
+                    </div>
+                    <div class="formInput">
+                        <input type="number" id = "te-slots" required min="0" max="2">
+                        <label for="te-slots">TE Starting Roster Slots</label>
+                        <span class="bar"></span>
+                        <span id="te-slots-error" class="error-message"></span>
+                    </div>
+                    <div class="formInput">
+                        <input type="number" id = "flex-slots" required min="0" max="3">
+                        <label for="flex-slots">FLEX Starting Roster Slots</label>
+                        <span class="bar"></span>
+                        <span id="flex-slots-error" class="error-message"></span>
+                    </div>
+                    <div class="formInput">
+                        <input type="number" id = "bench-slots" required min="0" max="8">
+                        <label for="bench-slots">Bench Roster Slots</label>
+                        <span class="bar"></span>
+                        <span id="bench-slots-error" class="error-message"></span>
+                    </div>
+                </form>
+            </div>
         </div>
-        <form class="ros-cons">
-            <div class="formInput">
-                <input type="number" id = "qb-slots" required min="0" max="3">
-                <label for="qb-slots">QB Starting Roster Slots</label>
-                <span class="bar"></span>
-                <span id="qb-slots-error" class="error-message"></span>
-            </div>
-            <div class="formInput">
-                <input type="number" id = "rb-slots" required min="0" max="4">
-                <label for="rb-slots">RB Starting Roster Slots</label>
-                <span class="bar"></span>
-                <span id="rb-slots-error" class="error-message"></span>
-            </div>
-            <div class="formInput">
-                <input type="number" id = "wr-slots" required min="0" max="4">
-                <label for="wr-slots">WR Starting Roster Slots</label>
-                <span class="bar"></span>
-                <span id="wr-slots-error" class="error-message"></span>
-            </div>
-            <div class="formInput">
-                <input type="number" id = "te-slots" required min="0" max="2">
-                <label for="te-slots">TE Starting Roster Slots</label>
-                <span class="bar"></span>
-                <span id="te-slots-error" class="error-message"></span>
-            </div>
-            <div class="formInput">
-                <input type="number" id = "flex-slots" required min="0" max="3">
-                <label for="flex-slots">FLEX Starting Roster Slots</label>
-                <span class="bar"></span>
-                <span id="flex-slots-error" class="error-message"></span>
-            </div>
-            <div class="formInput">
-                <input type="number" id = "bench-slots" required min="0" max="8">
-                <label for="bench-slots">Bench Roster Slots</label>
-                <span class="bar"></span>
-                <span id="bench-slots-error" class="error-message"></span>
-            </div>
-        </form>
     </div>
     <div id="roscontent" class="ros">
-        <div class="scoringButtonContainer">
-            <button id="userAdd-player" class="scoringButton">Add player</button>
-            <button id="userRemove-player" class="scoringButton">Remove player</button>
-        </div>
-        <form id="ros-cons" class="ros-cons">
-            <div class="formInput rosPlayer">
-                <input type="text" id = "ros1" required>
-                <label for="ros1">Enter a player</label>
-                <span class="bar"></span>
-                <span id="ros1Error" class="error-message"></span>
+        <div class="container">
+            <div class="background">
+                <div class="scoringButtonContainer">
+                    <button id="userAdd-player" class="scoringButton">Add player</button>
+                    <button id="userRemove-player" class="scoringButton">Remove player</button>
+                </div>
+                <form id="ros-cons" class="ros-cons">
+                    <div class="formInput rosPlayer">
+                        <input type="text" id = "ros1" required>
+                        <label for="ros1">Enter a player</label>
+                        <span class="bar"></span>
+                        <span id="ros1Error" class="error-message"></span>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
     <div id="opproscontent" class="oppros">
-        <div class="scoringButtonContainer">
-            <button id="oppAdd-player" class="scoringButton">Add player</button>
-            <button id="oppRemove-player" class="scoringButton">Remove player</button>
-        </div>
-        <form id="oppros-cons" class="ros-cons">
-            <div class="formInput opprosPlayer">
-                <input type="text" id = "oppRos1" required>
-                <label for="oppRos1">Enter a player</label>
-                <span class="bar"></span>
-                <span id="oppRos1Error" class="error-message"></span>
+        <div class="container">
+            <div class="background">
+                <div class="scoringButtonContainer">
+                    <button id="oppAdd-player" class="scoringButton">Add player</button>
+                    <button id="oppRemove-player" class="scoringButton">Remove player</button>
+                </div>
+                <form id="oppros-cons" class="ros-cons">
+                    <div class="formInput opprosPlayer">
+                        <input type="text" id = "oppRos1" required>
+                        <label for="oppRos1">Enter a player</label>
+                        <span class="bar"></span>
+                        <span id="oppRos1Error" class="error-message"></span>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
     <div id="tccontent" class="tc">
         <div class="tc-container">

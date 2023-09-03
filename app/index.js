@@ -12,7 +12,7 @@ let tradefor = new Set();
 
 const nextButton = document.getElementById("next");
 const prevButton = document.getElementById("prev");
-displayPage("tc");
+displayPage("sf");
 
 const pprButton = document.getElementById("ppr");
 const standardButton = document.getElementById("standard");

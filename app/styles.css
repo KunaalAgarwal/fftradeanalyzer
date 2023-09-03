@@ -81,6 +81,20 @@ body {
     background-color: rgba(0,0,0,0.8);
 }
 
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.background {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+}
+
 .scoringButtonContainer {
     padding-top: 30px;
     display: flex;
@@ -138,7 +152,7 @@ footer {
 
 .formInput {
     position: relative;
-    margin-bottom:45px;
+    margin-bottom:40px;
 }
 
 input {
@@ -165,7 +179,6 @@ label {
 }
 
 input {
-    background-color: lightgray;
     font-family: inherit;
     font-weight: 500;
     color: #666666
@@ -174,7 +187,6 @@ input {
 input:focus ~ label, input:valid ~ label 		{
     top:-20px;
     font-size:14px;
-    color:#666666;
 }
 
 .bar { position:relative; display:block; width:300px; }
