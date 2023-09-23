@@ -15,17 +15,16 @@ async function getPlayerData(playerName, scoringFormat) {
         if (scoringFormat !== undefined && scoringFormat.toUpperCase() === "STANDARD"){
             scoringFormat = "";
         }
-        const cacheKey = `${playerName.toUpperCase()}${scoringFormat}`;
-        const cacheResponse = await players.getItem(cacheKey);
-        if (cacheResponse !== null) {
-            return cacheResponse;
-        }
+        // const cacheKey = `${playerName.toUpperCase()}${scoringFormat}`;
+        // const cacheResponse = await players.getItem(cacheKey);
+        // if (cacheResponse !== null) {
+        //     return cacheResponse;
+        // }
         const [playerObj, upside] = await Promise.all([
             getProjections(playerName, scoringFormat),
             getUpside(playerName, scoringFormat)
         ]);
         playerObj["upside"] = upside;
-        players.setItem(cacheKey, playerObj);
         return playerObj;
     } catch (error) {
         console.log("An error occurred in the API request: " + error);
